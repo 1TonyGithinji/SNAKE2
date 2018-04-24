@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <style>
+            body {
+    padding:0;
+    margin:0;
+}
+form input
+{
+    width:50px;
+    padding:5px;
+    border:0;
+    outline:0;
+    background:linear-gradient(green);
+}
+#left
+{
+	position:absolute;
+	margin-top:60px;
+	margin-left:-100px;
+}
+#right
+{
+	position:absolute;
+	margin-top:60px;
+	margin-left:60px;
+}
+#up
+{
+	position:absolute;
+	margin-left:-20px;
+}
+#down
+{
+	position:absolute;
+	margin-top:120px;
+	margin-left:-30px;
+}
+
+        </style>
+</head>
+<body background="black">
+<div>
+    <div>
+        <script>
+    var snakew=10,snakeh=10;
+    var canW=500;
+    var canH=500;
+    var i;
+    function drawsnake(x,y)
+    {
+    var can=document.getElementById('can');
+    var ctx=can.getContext('2d');
+    ctx.fillStyle='lime';
+    ctx.fillRect(x*snakew,y*snakeh,snakew,snakeh);
+    ctx.strokeStyle='black';
+    ctx.strokeRect(x*snakew,y*snakeh,snakew,snakeh);
+    }
+    var len=5;
+    var snake=[];
+    var d;
+    for(i=len-1;i>=0;i--)
+    {
+    snake.push({
+    x:i,
+    y:0
+    });
+    }
+
+    //food variable
+    var food={
+    x:Math.round(Math.random()*(canW/snakew)/2),
+    y:Math.round(Math.random()*(canH/snakeh)/2)
+    }
+
+    //food function
+
+    function drawFood(x,y)
+    {
+    var can=document.getElementById('can');
+    var ctx=can.getContext('2d');
+    ctx.fillStyle='red';
+    ctx.fillRect(x*snakew,y*snakeh,snakew,snakeh);
+    }
+    //  draw function
+
+
+    function draw(dir)
+    {
+    d=dir;
+    var can=document.getElementById('can');
+    var ctx=can.getContext('2d');
+    ctx.clearRect(0,0,canW,canH);
+    for(i=0;i<snake.length;i++)
+    {
+    drawsnake(snake[i].x,snake[i].y);
+    }
+    drawFood(food.x,food.y);
+    var X=snake[0].x;
+    var Y=snake[0].y;
+    if(dir=="left")
+    {
+    X--;
+    }
+    else if(dir=="right")
+    {
+    X++;
+    }
+    else if(dir=="up")
+    {
+    Y--;
+    }
+    else if(dir=="down")
+    {
+    Y++;
+    }
+    if(X<0 || Y<0 || X>=canW || Y>=canH)
+    {
+    var can=document.getElementById("can");
+    var ctx=can.getContext('2d');
+    ctx.fillStyle="red";
+    ctx.font="60px sens-serif";
+    ctx.fillText("Game Over",canW/6,canH/2);
+    return false;
+    }
+    //alert(food.x);
+    //alert(food.y);
+    if(X==food.x && Y==food.y)
+    {
+    food={
+    x:Math.round(Math.random()*(canW/snakew)/2),
+    y:Math.round(Math.random()*(canH/snakeh)/2)
+    }
+    var newHead={
+    x:X,
+    y:Y
+    }
+    }
+    else
+    {
+    snake.pop();
+    var newHead={
+    x:X,
+    y:Y
+    }
+    }
+
+    snake.unshift(newHead);
+    }
+    setInterval("draw(d)",200);
+</script>
+
+    </div>
+    <div onLoad=draw("right")>
+        <center><canvas id="can" width=500 height=500 style="background:black"></canvas>
+            <form>
+                <input type=button id='left' value="left" onClick=draw("left")>
+                <input type=button id='right' value="right" onClick=draw("right")>
+                <input type=button id='up' value="up" onClick=draw("up")>
+                <input type=button id='down' value="down" onClick=draw("down")>
+            </form></center>
+    </div>
+
+</div>
+</body>
+</html>
